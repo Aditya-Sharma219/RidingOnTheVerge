@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Image from "next/image"; // Import next/image
+import Image from "next/image"; // Import next/image for image optimization
 import { Orbitron } from "next/font/google"; // Import Orbitron font for enhanced styling
 
 // Font Import for a modern feel
@@ -13,7 +13,8 @@ const HeroSection = () => {
   return (
     <section
       id="videos"
-      className="relative z-20 bg-cover bg-center bg-[url('/images/hero-bg.jpg')] py-16 md:py-24"
+      className="relative z-20 bg-cover bg-center py-16 md:py-24"
+      style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
     >
       {/* Light Overlay */}
       <div className="absolute inset-0 bg-white bg-opacity-60 z-0" />
@@ -28,15 +29,17 @@ const HeroSection = () => {
         </h1>
 
         {/* Description */}
+        {/* Description */}
         <p className="text-lg md:text-xl mb-8 text-gray-700 max-w-4xl mx-auto">
           Dive into the world of two wheels – thrilling adventures, honest reviews,
-          and real-life biking experiences. Whether you're a beginner or a pro rider,
-          you'll find something to fuel your passion here.
+          and real-life biking experiences. Whether you&apos;re a beginner or a pro rider,
+          you&apos;ll find something to fuel your passion here.
         </p>
+
 
         {/* YouTube Video Iframes */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mx-auto">
-          {[ 
+          {[
             {
               src: "https://www.youtube.com/embed/YUHfCWq6mzk?si=5Vo7S1Vmx5tUFSj7",
               title: "Royal Enfield Classic 350 Exhaust & Vibes Review",
@@ -66,6 +69,7 @@ const HeroSection = () => {
                 allowFullScreen
                 loading="lazy" // Lazy load iframes for performance
                 aria-label={video.title} // Improve accessibility for screen readers
+                aria-describedby="video-description"
               ></iframe>
             </div>
           ))}

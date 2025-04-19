@@ -38,22 +38,22 @@ const HeroCarousel = () => {
   useEffect(() => {
     const interval = setInterval(nextImage, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [nextImage]); // Added nextImage as a dependency
 
   return (
     <section
       id="hc"
       className="relative h-screen w-full overflow-hidden"
-      aria-live="polite" // Announcing image changes to screen readers
+      aria-live="polite"
     >
       {/* Background Images with Fade Effect */}
       {images.map((img, index) => (
         <Image
           key={index}
           src={img}
-          alt={`Carousel ${index}`}
+          alt={`Carousel Image ${index + 1}`} // Descriptive alt text
           fill
-          loading="lazy" // Lazy loading images for better performance
+          loading="lazy"
           className={`absolute top-0 left-0 object-cover transition-all duration-1000 ease-in-out ${
             index === currentImageIndex
               ? "opacity-100 z-10 scale-105"
@@ -72,15 +72,15 @@ const HeroCarousel = () => {
         </h1>
         <TypeAnimation
           sequence={[
-            "RidingOnTheVerge", // Text
-            1000, // Wait 1s
-            "", // Erase
+            "RidingOnTheVerge",
+            1000,
+            "",
             500,
-            "Bike. Film. Ride.", // New text
+            "Bike. Film. Ride.",
             1500,
-            "", // Erase again
+            "",
             500,
-            "RidingOnTheVerge", // Final loop
+            "RidingOnTheVerge",
           ]}
           wrapper="span"
           speed={40}
