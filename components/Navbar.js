@@ -30,7 +30,7 @@ const Navbar = () => {
     const audio = audioRef.current;
     audio.src = songs[randomIndex];
     audio.currentTime = startTime;
-    audio.volume = 0.4;
+    audio.volume = 0.3;
     audio.muted = isMuted;
 
     // Make sure the autoplay works and restart the song
