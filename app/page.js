@@ -5,21 +5,23 @@ import ParallaxSection from "@/components/ParallaxSection";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import About from "@/components/About";
+import BikeScene from "@/components/BikeScene";
 
 
 
 export default function Home() {
   return (<>
 
-  <HeroCarousel />
-  <HeroSection  />
-  <Trips />
-  <About />
+    <HeroCarousel />
+    <HeroSection />
+    <Trips />
+    <About />
 
-<ParallaxSection/>
+    <BikeScene />
+    <ParallaxSection />
 
 
-      <Footer />
+    <Footer />
   </>
   );
 }

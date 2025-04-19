@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['example.com'],  // Add allowed image domains for external images
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'example.com',
+        },
+      ],  // Add allowed image domains for external images
     },
     reactStrictMode: true,  // Enable React strict mode for catching potential issues
     env: {

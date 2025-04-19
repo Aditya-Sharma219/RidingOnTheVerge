@@ -13,9 +13,9 @@ const About = () => {
       id="about"
       className="bg-white py-16 px-4 md:px-8 lg:px-20 scroll-mt-16"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center justify-center">
         {/* Text Content */}
-        <div>
+        <div className="text-center md:text-left">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             About Riding On The Verge
           </h2>
@@ -37,14 +37,14 @@ const About = () => {
         </div>
 
         {/* Image Carousel */}
-        <div>
+        <div className="relative w-full flex justify-center">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             navigation
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{ delay: 2500 }}
-            className="rounded-xl shadow-lg max-w-full"
+            className="rounded-xl shadow-lg w-full max-w-lg h-80" // Added explicit height for visibility
           >
             {[ 
               "/images/bike1.jpg", 
@@ -53,13 +53,13 @@ const About = () => {
               "/images/bike4.jpg" 
             ].map((img, i) => (
               <SwiperSlide key={i}>
-                <div className="relative">
+                <div className="relative w-full h-full">
                   <Image
                     src={img}
                     alt={`Ride image ${i + 1}`}
                     layout="fill"
                     objectFit="cover"
-                    className="w-full h-64 object-cover rounded-xl"
+                    className="rounded-xl"
                   />
                   <div className="absolute bottom-4 left-4 text-white text-2xl font-semibold bg-black/50 p-2 rounded-lg">
                     Adventure Awaits

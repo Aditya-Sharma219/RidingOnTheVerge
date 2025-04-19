@@ -80,10 +80,10 @@ const Trips = () => {
                 </video>
 
                 <div className="relative z-10 flex flex-col justify-center items-start h-full px-8 bg-black/40">
-                    <h1 className="text-5xl font-bold text-white flex items-baseline gap-3">
-                        International{" "}
+                    <h1 className="text-4xl md:text-5xl font-bold text-white flex flex-col md:flex-row items-baseline gap-3">
+                        International
                         <span
-                            className={`inline-block text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r ${gradient} transition-all duration-1000 transform ${animate ? "opacity-0 -translate-y-10" : "opacity-100 translate-y-0"
+                            className={`inline-block text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r ${gradient} transition-all duration-1000 transform ${animate ? "opacity-0 -translate-y-10" : "opacity-100 translate-y-0"
                                 }`}
                         >
                             {words[currentWordIndex]}
