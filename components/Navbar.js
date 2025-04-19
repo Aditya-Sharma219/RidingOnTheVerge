@@ -15,67 +15,88 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
-  // Handle scroll event to toggle the navbar background color
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    // Clean up the event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = "smooth";
   }, []);
 
   return (
     <header
-      className={`fixed w-full z-50 shadow-md transition-all duration-300 ${
-        scrolled ? "bg-black text-white" : "bg-transparent text-white"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${scrolled
+          ? "bg-white/90 backdrop-blur-md shadow-xl border-b border-red-400/20"
+          : "bg-transparent text-gray-800"
+        }`}
     >
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        
-        {/* Logo + Brand Name */}
-        <Link href="#home" className="flex items-center space-x-3">
-          <img className="rounded-lg" src="/images/logo.png" alt="Logo" width={100} height={100} />
-          <span className="text-3xl font-extrabold text-red-600 tracking-tight">
-            RidingOnTheVerge
-          </span>
-        </Link>
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo & Brand */}
+        <div className="flex items-center space-x-4">
+          <Link href="#home">
+            <img
+              className="rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300 shadow-md"
+              src="/images/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+            />
+          </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-8">
+          <a
+            href="https://youtube.com/@RidingOnTheVerge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-red-500 via-yellow-400 to-orange-500 
+              bg-clip-text text-transparent transition-all duration-300 ease-in-out drop-shadow-lg hover:drop-shadow-[0_0_10px_rgba(255,0,0,0.6)]`}
+          >
+            RidingOnTheVerge
+          </a>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex space-x-8 text-lg font-medium">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="hover:text-red-500 transition-all"
+              className={`relative group transition duration-300 ${scrolled ? "text-gray-800" : "text-white"
+                }`}
             >
-              {link.name}
+              <span className="group-hover:text-red-500 transition-colors">
+                {link.name}
+              </span>
+              <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-red-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
           ))}
         </nav>
 
+
         {/* Mobile Hamburger */}
         <div className="md:hidden">
-          <button onClick={() => setOpen(!open)} aria-label="Toggle Menu">
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle Menu"
+            className="text-gray-800 hover:text-red-500 transition-transform hover:scale-110"
+          >
             {open ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Slide-in */}
       {open && (
-        <div className="md:hidden bg-black px-4 pb-4 pt-2 space-y-2">
+        <div className="md:hidden animate-fade-in-down bg-black/90 text-white px-6 pb-4 pt-2 space-y-3 shadow-xl transition-all">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="block text-white hover:text-red-500"
+              className="block text-lg font-semibold hover:text-red-400 transition-colors"
               onClick={() => setOpen(false)}
             >
               {link.name}

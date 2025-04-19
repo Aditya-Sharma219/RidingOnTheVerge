@@ -3,6 +3,19 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 // Example (Next.js font import)
 import { Bebas_Neue } from "next/font/google";
+import { Anton, Rubik } from 'next/font/google'
+
+const anton = Anton({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-anton',
+})
+
+const rubik = Rubik({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-rubik',
+})
 
 const bebas = Bebas_Neue({
   weight: "400",
@@ -30,7 +43,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${bebas.className} antialiased`}
+        className={`${anton.variable} ${rubik.variable} antialiased`}
       >
         <Navbar/>
         {children}

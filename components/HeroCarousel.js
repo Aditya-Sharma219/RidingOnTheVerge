@@ -1,6 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image"; // Import next/image
+import Image from "next/image";
+import { TypeAnimation } from "react-type-animation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Bebas_Neue } from "@next/font/google";
+import { Orbitron } from "next/font/google";
+
+// Font Imports
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const bebasN = Bebas_Neue({ subsets: ["latin"], weight: "400" });
 
 const HeroCarousel = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -8,57 +20,108 @@ const HeroCarousel = () => {
   const images = [
     "/images/photo1.jpg",
     "/images/photo2.jpg",
-    "/images/photo3.jpg", // Add as many image paths as needed
+    "/images/photo3.jpg",
   ];
 
-  // Function to go to the next image
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  // Auto-change image every 5 seconds
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
   useEffect(() => {
     const interval = setInterval(nextImage, 5000);
     return () => clearInterval(interval);
-  }, [nextImage]); // Added nextImage as a dependency
+  }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      {/* Background Image */}
-      <Image
-        src={images[currentImageIndex]}
-        alt="Carousel Image"
-        layout="fill"
-        objectFit="cover"
-        className="absolute top-0 left-0 z-10"
-      />
+    <section id="hc" className="relative h-screen w-full overflow-hidden">
+      {/* Background Images with Fade Effect */}
+      {images.map((img, index) => (
+        <Image
+          key={index}
+          src={img}
+          alt={`Carousel ${index}`}
+          fill
+          className={`absolute top-0 left-0 object-cover transition-all duration-1000 ease-in-out ${
+            index === currentImageIndex
+              ? "opacity-100 z-10 scale-105"
+              : "opacity-0 z-0 scale-100"
+          }`}
+        />
+      ))}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-50" />
+      <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
       {/* Centered Text */}
-      <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-white">
-          Welcome to <br />
-          <span className="text-red-600">RidingOnTheVerge</span>
+      <div className="relative z-30 h-full flex flex-col items-center justify-center text-center px-4">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-xl mb-4">
+          Welcome to
         </h1>
+        <TypeAnimation
+          sequence={[
+            "RidingOnTheVerge", // Text
+            1000, // Wait 1s
+            "", // Erase
+            500,
+            "Bike. Film. Ride.", // New text
+            1500,
+            "", // Erase again
+            500,
+            "RidingOnTheVerge", // Final loop
+          ]}
+          wrapper="span"
+          speed={40}
+          repeat={Infinity}
+          className={`${orbitron.className} text-3xl md:text-5xl text-red-500 drop-shadow-[0_0_15px_rgba(255,0,0,0.6)]`}
+        />
+        {/* Call-to-Action Button */}
+        <a
+          href="#about"
+          className="mt-6 px-6 py-3 bg-red-600 text-white text-lg rounded-full hover:bg-red-700 transition-shadow shadow-lg hover:shadow-red-600/40"
+        >
+          Explore More
+        </a>
       </div>
 
       {/* Navigation Arrows */}
       <button
-        onClick={() => setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1))}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-20"
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 text-white hover:text-red-500 hover:-translate-x-1 transition-all duration-300 ease-in-out"
+        aria-label="Previous Image"
       >
-        &#10094;
+        <ChevronLeft size={40} />
       </button>
+
       <button
         onClick={nextImage}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-20"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 text-white hover:text-red-500 hover:translate-x-1 transition-all duration-300 ease-in-out"
+        aria-label="Next Image"
       >
-        &#10095;
+        <ChevronRight size={40} />
       </button>
+
+      {/* Carousel Dots */}
+      <div className="absolute bottom-6 w-full z-30 flex justify-center gap-2">
+        {images.map((_, i) => (
+          <div
+            key={i}
+            onClick={() => setCurrentImageIndex(i)}
+            className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-300 ${
+              currentImageIndex === i
+                ? "bg-red-500 scale-110 shadow-md"
+                : "bg-white/50 hover:bg-red-400"
+            }`}
+          ></div>
+        ))}
+      </div>
     </section>
   );
 };
