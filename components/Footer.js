@@ -78,7 +78,7 @@ const Footer = () => {
         <h3 className="text-xl font-semibold mb-2 text-gray-800">Work With Us 🚀</h3>
         <p className="text-md text-gray-700">
           Interested in sponsoring our rides or collaborating with us?
-          We'd love to hear from you! Reach out via{" "}
+          We&apos;d love to hear from you! Reach out via{" "}
           <a
             href="mailto:ridingontheverge@gmail.com"
             className="text-blue-600 underline hover:text-blue-800 transition"
@@ -95,6 +95,7 @@ const Footer = () => {
             socials
           </a>.
         </p>
+
       </div>
 
       {/* Bottom Text */}
