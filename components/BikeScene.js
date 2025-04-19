@@ -18,7 +18,6 @@ import {
   Instance,
 } from "@react-three/drei";
 import * as THREE from "three";
-// import DustParticles from "./DustParticles";
 
 // ✅ Bike Model (with proper cleanup)
 const Bike = memo(() => {
@@ -26,8 +25,9 @@ const Bike = memo(() => {
   const bikeRef = useRef();
 
   useEffect(() => {
+    const currentBike = bikeRef.current; // Store the current ref value
     return () => {
-      bikeRef.current?.traverse((child) => {
+      currentBike?.traverse((child) => {
         if (child.isMesh) {
           child.geometry.dispose();
           if (child.material.map) child.material.map.dispose();
@@ -55,9 +55,9 @@ const Bike = memo(() => {
   );
 });
 
+Bike.displayName = "Bike"; // Set the display name for the Bike component
 
 // ❄️ Optimized Snowfall using Instancing
-// ❄️ Enhanced Snowfall with Even Spread + Glow
 const Snow = memo(() => {
   const snowCount = 250;
   const snowData = useRef(
@@ -100,6 +100,7 @@ const Snow = memo(() => {
   );
 });
 
+Snow.displayName = "Snow"; // Set the display name for the Snow component
 
 // ⏳ Loader UI
 const Loader = () => {
@@ -169,7 +170,6 @@ const BikeCanvas = () => {
           <>
             <Bike />
             {/* Dust particles below the bike */}
-            
             <ContactShadows
               position={[0, -1.4, 0]}
               scale={40}
@@ -180,7 +180,6 @@ const BikeCanvas = () => {
           </>
         )}
       </Suspense>
-
 
       <OrbitControls enableZoom={true} />
     </Canvas>
@@ -212,8 +211,6 @@ const BikeScene = () => {
     }
   };
 
-
-
   return (
     <div
       id="game"
@@ -225,7 +222,6 @@ const BikeScene = () => {
         ref={raceSound}
         src="/sounds/race.mp3"
         preload="auto"
-
       />
 
       {!start && (
