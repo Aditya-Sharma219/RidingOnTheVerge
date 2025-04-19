@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -7,15 +7,62 @@ import Image from "next/image";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); // State to track mute/unmute
+  const [hasInteracted, setHasInteracted] = useState(false); // Track user interaction for autoplay
 
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Videos", href: "#videos" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Contact", href: "#footer" },
-    { name: "Game", href: "#game" },
+  const audioRef = useRef(null);
+
+  const songs = [
+    "/music/music1.mp3",
+    "/music/music2.mp3",
+    "/music/music3.mp3",
+    "/music/music4.mp3",
   ];
+
+  // Pick a random song and start/seek
+  const playRandomSong = () => {
+    if (!audioRef.current) return;
+
+    const randomIndex = Math.floor(Math.random() * songs.length);
+    const startTime = Math.floor(Math.random() * 15); // 0 to 15 sec
+    const duration = 30000 + Math.floor(Math.random() * 30000); // 30s to 60s
+
+    const audio = audioRef.current;
+    audio.src = songs[randomIndex];
+    audio.currentTime = startTime;
+    audio.volume = 0.4;
+    audio.muted = isMuted;
+
+    // Make sure the autoplay works and restart the song
+    audio.play().catch((e) => console.warn("Autoplay blocked:", e));
+
+    // Stop the current song after a random duration
+    setTimeout(() => {
+      audio.pause();
+      playRandomSong(); // Trigger next song
+    }, duration);
+  };
+
+  const handleSongEnd = () => {
+    playRandomSong();
+  };
+
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!hasInteracted) {
+        setHasInteracted(true);
+        playRandomSong();
+      }
+    };
+
+    window.addEventListener("click", handleUserInteraction, { once: true });
+    window.addEventListener("scroll", handleUserInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("click", handleUserInteraction);
+      window.removeEventListener("scroll", handleUserInteraction);
+    };
+  }, [hasInteracted]);
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50);
@@ -30,6 +77,15 @@ const Navbar = () => {
     document.documentElement.style.scrollBehavior = "smooth";
   }, []);
 
+  const toggleMute = () => {
+    setIsMuted((prevState) => {
+      if (audioRef.current) {
+        audioRef.current.muted = !prevState;
+      }
+      return !prevState;
+    });
+  };
+
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${scrolled
@@ -38,7 +94,6 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo & Brand */}
         <div className="flex items-center space-x-4">
           <Link href="#home">
             <Image
@@ -61,23 +116,21 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8 text-lg font-medium">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={`relative group transition duration-300 ${scrolled ? "text-gray-800" : "text-white"}`}
-            >
-              <span className="group-hover:text-red-500 transition-colors">
-                {link.name}
-              </span>
-              <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-red-500 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-          ))}
+          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#footer" }, { name: "Game", href: "#game" }].map(
+            (link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`relative group transition duration-300 ${scrolled ? "text-gray-800" : "text-white"}`}
+              >
+                <span className="group-hover:text-red-500 transition-colors">{link.name}</span>
+                <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-red-500 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+            )
+          )}
         </nav>
 
-        {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button
             onClick={() => setOpen(!open)}
@@ -89,21 +142,36 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Slide-in */}
       {open && (
         <div className="md:hidden animate-fade-in-down bg-black/90 text-white px-6 pb-4 pt-2 space-y-3 shadow-xl transition-all transform translate-y-0">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="block text-lg font-semibold hover:text-red-400 transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#footer" }, { name: "Game", href: "#game" }].map(
+            (link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="block text-lg font-semibold hover:text-red-400 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                {link.name}
+              </Link>
+            )
+          )}
         </div>
       )}
+
+      {/* Mute Button (Mobile Fixed Position) */}
+      <div
+        className={`fixed bottom-4 right-4 z-50 transition-all duration-300 ${scrolled ? "block" : "hidden"}`}
+      >
+        <button
+          onClick={toggleMute}
+          className="text-xs sm:text-sm md:text-lg bg-white text-gray-800 border border-gray-400 px-3 py-1 rounded-lg shadow-lg hover:bg-red-100 transition-all cursor-pointer"
+        >
+          {isMuted ? "Unmute Music" : "Mute Music"}
+        </button>
+      </div>
+
+      <audio ref={audioRef} preload="auto" onEnded={handleSongEnd} />
     </header>
   );
 };
