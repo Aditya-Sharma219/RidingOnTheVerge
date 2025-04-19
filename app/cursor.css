@@ -1,0 +1,30 @@
+.cursor-dot,
+.cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease-out;
+}
+* {
+    cursor: none !important;
+  }
+  
+
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(255, 215, 0); /* gold */
+  border-radius: 50%;
+}
+
+.cursor-follower {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 215, 0, 0.4); /* semi-transparent gold */
+  border-radius: 50%;
+  transition: transform 0.2s ease-out;
+}

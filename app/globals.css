@@ -1,4 +1,7 @@
 @import "tailwindcss";
+* {
+  cursor: none !important;
+}
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
@@ -93,4 +96,31 @@ html {
 
 .animate-slide-out {
   animation: slideOut 0.6s ease-in forwards;
+}
+
+.cursor-dot,
+.cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  mix-blend-mode: normal; /* optional: 'difference' makes it pop on dark BGs */
+}
+
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background-color: yellow;
+  transition: transform 0.05s ease-out;
+}
+
+.cursor-follower {
+  width: 40px;
+  height: 40px;
+  background-color: yellow;
+  opacity: 0.4;
+  transition: transform 0.2s ease-out;
 }
