@@ -13,7 +13,8 @@ const Navbar = () => {
     { name: "About", href: "#about" },
     { name: "Videos", href: "#videos" },
     { name: "Gallery", href: "#gallery" },
-    { name: "Contact", href: "#contact" },
+    { name: "Contact", href: "#footer" },
+    { name: "Game", href: "#game" },
   ];
 
   const handleScroll = useCallback(() => {

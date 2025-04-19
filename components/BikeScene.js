@@ -143,7 +143,7 @@ const BikeScene = () => {
   const [start, setStart] = useState(false);
 
   return (
-    <div className="w-full h-screen bg-black relative flex items-center justify-center">
+    <div id="game" className="w-full h-screen bg-black relative flex items-center justify-center">
       {!start && (
         <div className="absolute inset-0 bg-black flex items-center justify-center z-10">
           <div className="text-center">
