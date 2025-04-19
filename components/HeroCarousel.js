@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Bebas_Neue } from "@next/font/google";
+import { Bebas_Neue } from "next/font/google";
 import { Orbitron } from "next/font/google";
 
 // Font Imports
@@ -53,16 +53,14 @@ const HeroCarousel = () => {
         <Image
           key={index}
           src={img}
-          alt={`Carousel Image ${index + 1}`} // Descriptive alt text
+          alt={`Carousel Image ${index + 1}`}
           layout="fill"
           objectFit="cover"
-          loading={index === 0 ? "eager" : "lazy"} // prioritize the first image
-          className={`absolute top-0 left-0 transition-all duration-1000 ease-in-out ${
-            index === currentImageIndex
-              ? "opacity-100 z-10 scale-105"
-              : "opacity-0 z-0 scale-100"
-          }`}
+          loading={index === 0 ? "eager" : "lazy"}
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAAAAAAD..." // Add your base64 image string here
+          className={`absolute top-0 left-0 transition-all duration-1000 ease-in-out ${index === currentImageIndex ? "opacity-100 z-10 scale-105" : "opacity-0 z-0 scale-100"}`}
         />
+
       ))}
 
       {/* Overlay */}
@@ -122,11 +120,10 @@ const HeroCarousel = () => {
           <div
             key={i}
             onClick={() => setCurrentImageIndex(i)}
-            className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-300 ${
-              currentImageIndex === i
+            className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-300 ${currentImageIndex === i
                 ? "bg-red-500 scale-110 shadow-md"
                 : "bg-white/50 hover:bg-red-400"
-            }`}
+              }`}
             aria-label={`Go to image ${i + 1}`}
           ></div>
         ))}

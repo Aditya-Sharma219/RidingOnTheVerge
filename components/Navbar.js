@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ const Navbar = () => {
         {/* Logo & Brand */}
         <div className="flex items-center space-x-4">
           <Link href="#home">
-            <img
+            <Image
               className="rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300 shadow-md"
               src="/images/logo.png"
               alt="Logo"

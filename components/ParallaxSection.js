@@ -28,7 +28,7 @@ const ParallaxSection = ({ imageUrl, heading, subheading, objectFit = "cover", q
           layout="fill"
           objectFit={objectFit}
           quality={quality}
-          placeholder="blur" // Added placeholder for loading performance
+           // Added placeholder for loading performance
         />
       </motion.div>
 
