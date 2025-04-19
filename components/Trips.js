@@ -104,8 +104,7 @@ const Trips = () => {
 
             {/* Trips Section */}
             <section className="bg-[#FFF7DB] py-12 px-4">
-                <h2 className="text-6xl font-extrabold text-center text-gray-800 mb-10 
-  relative overflow-hidden group">
+                <h2 className="text-6xl font-extrabold text-center text-gray-800 mb-10 relative overflow-hidden group">
                     <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent">
                         Trips
                     </span>
@@ -113,7 +112,6 @@ const Trips = () => {
                         Trips
                     </span>
                 </h2>
-
 
                 <div
                     ref={scrollRef}

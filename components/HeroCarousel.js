@@ -41,7 +41,11 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section id="hc" className="relative h-screen w-full overflow-hidden">
+    <section
+      id="hc"
+      className="relative h-screen w-full overflow-hidden"
+      aria-live="polite" // Announcing image changes to screen readers
+    >
       {/* Background Images with Fade Effect */}
       {images.map((img, index) => (
         <Image
@@ -49,6 +53,7 @@ const HeroCarousel = () => {
           src={img}
           alt={`Carousel ${index}`}
           fill
+          loading="lazy" // Lazy loading images for better performance
           className={`absolute top-0 left-0 object-cover transition-all duration-1000 ease-in-out ${
             index === currentImageIndex
               ? "opacity-100 z-10 scale-105"
@@ -119,6 +124,7 @@ const HeroCarousel = () => {
                 ? "bg-red-500 scale-110 shadow-md"
                 : "bg-white/50 hover:bg-red-400"
             }`}
+            aria-label={`Go to image ${i + 1}`}
           ></div>
         ))}
       </div>

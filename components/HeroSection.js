@@ -36,7 +36,7 @@ const HeroSection = () => {
 
         {/* YouTube Video Iframes */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mx-auto">
-          {[
+          {[ 
             {
               src: "https://www.youtube.com/embed/YUHfCWq6mzk?si=5Vo7S1Vmx5tUFSj7",
               title: "Royal Enfield Classic 350 Exhaust & Vibes Review",
@@ -64,6 +64,8 @@ const HeroSection = () => {
                 className="w-full h-full border-0 rounded-lg shadow-xl"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                loading="lazy" // Lazy load iframes for performance
+                aria-label={video.title} // Improve accessibility for screen readers
               ></iframe>
             </div>
           ))}

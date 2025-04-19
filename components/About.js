@@ -5,6 +5,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Image from "next/image";
 
 const About = () => {
   return (
@@ -43,7 +44,7 @@ const About = () => {
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{ delay: 2500 }}
-            className="rounded-xl shadow-lg max-w-100"
+            className="rounded-xl shadow-lg max-w-full"
           >
             {[ 
               "/images/bike1.jpg", 
@@ -53,9 +54,11 @@ const About = () => {
             ].map((img, i) => (
               <SwiperSlide key={i}>
                 <div className="relative">
-                  <img
+                  <Image
                     src={img}
                     alt={`Ride image ${i + 1}`}
+                    layout="fill"
+                    objectFit="cover"
                     className="w-full h-64 object-cover rounded-xl"
                   />
                   <div className="absolute bottom-4 left-4 text-white text-2xl font-semibold bg-black/50 p-2 rounded-lg">

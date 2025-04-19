@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 // Example (Next.js font import)
 import { Bebas_Neue } from "next/font/google";
 import { Anton, Rubik } from 'next/font/google'
+import { Roboto } from '@next/font/google'; 
+
 
 const anton = Anton({
   subsets: ['latin'],

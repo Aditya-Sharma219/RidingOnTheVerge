@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -15,14 +15,14 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 50);
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
@@ -31,9 +31,9 @@ const Navbar = () => {
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-xl border-b border-red-400/20"
-          : "bg-transparent text-gray-800"
-        }`}
+        ? "bg-white/90 backdrop-blur-md shadow-xl border-b border-red-400/20"
+        : "bg-transparent text-gray-800"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo & Brand */}
@@ -65,8 +65,7 @@ const Navbar = () => {
             <Link
               key={link.name}
               href={link.href}
-              className={`relative group transition duration-300 ${scrolled ? "text-gray-800" : "text-white"
-                }`}
+              className={`relative group transition duration-300 ${scrolled ? "text-gray-800" : "text-white"}`}
             >
               <span className="group-hover:text-red-500 transition-colors">
                 {link.name}
@@ -75,7 +74,6 @@ const Navbar = () => {
             </Link>
           ))}
         </nav>
-
 
         {/* Mobile Hamburger */}
         <div className="md:hidden">
@@ -91,7 +89,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Slide-in */}
       {open && (
-        <div className="md:hidden animate-fade-in-down bg-black/90 text-white px-6 pb-4 pt-2 space-y-3 shadow-xl transition-all">
+        <div className="md:hidden animate-fade-in-down bg-black/90 text-white px-6 pb-4 pt-2 space-y-3 shadow-xl transition-all transform translate-y-0">
           {navLinks.map((link) => (
             <Link
               key={link.name}
