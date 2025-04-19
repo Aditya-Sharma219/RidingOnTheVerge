@@ -1,6 +1,6 @@
-// components/HeroCarousel.jsx
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image"; // Import next/image
 
 const HeroCarousel = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -22,15 +22,17 @@ const HeroCarousel = () => {
   useEffect(() => {
     const interval = setInterval(nextImage, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [nextImage]); // Added nextImage as a dependency
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image */}
-      <img
+      <Image
         src={images[currentImageIndex]}
         alt="Carousel Image"
-        className="absolute top-0 left-0 w-full h-full object-cover z-10"
+        layout="fill"
+        objectFit="cover"
+        className="absolute top-0 left-0 z-10"
       />
 
       {/* Overlay */}

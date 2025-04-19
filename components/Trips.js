@@ -15,7 +15,7 @@ const Trips = () => {
     return (
         <>
             {/* Hero Section */}
-            <section className="relative h-[80vh] overflow-hidden">
+            <section id='gallery' className="relative h-[80vh] overflow-hidden">
                 <video
                     autoPlay
                     muted
