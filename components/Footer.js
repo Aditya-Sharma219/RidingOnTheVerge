@@ -17,38 +17,59 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-100 py-10 border-t border-gray-300">
+    <footer className="bg-gradient-to-r from-gray-200 to-gray-100 py-10 border-t border-gray-300">
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-        {/* Links */}
+        {/* Links Section */}
         <div className="flex gap-6 text-gray-700 font-medium text-lg">
-          <button onClick={() => scrollToSection("hc")}>Home</button>
-          <button onClick={() => scrollToSection("about")}>About</button>
-          <button onClick={() => scrollToSection("gallery")}>Gallery</button>
+          <button
+            onClick={() => scrollToSection("hc")}
+            aria-label="Go to Home Section"
+            className="hover:text-blue-600 cursor-pointer transition-colors"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => scrollToSection("about")}
+            aria-label="Go to About Section"
+            className="hover:text-blue-600 cursor-pointer transition-colors"
+          >
+            About
+          </button>
+          <button
+            onClick={() => scrollToSection("gallery")}
+            aria-label="Go to Gallery Section"
+            className="hover:text-blue-600 cursor-pointer transition-colors"
+          >
+            Gallery
+          </button>
         </div>
 
-        {/* Social Icons */}
-        <div className="flex gap-5 text-gray-700">
+        {/* Social Icons Section */}
+        <div className="flex gap-6 text-gray-700">
           <a
-            href="https://youtube.com/@RidingOnTheVerge" // replace with your actual link
+            href="https://youtube.com/@RidingOnTheVerge"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="YouTube"
+            aria-label="Go to YouTube"
+            className="hover:text-red-600 transition-transform transform hover:scale-110"
           >
-            <Youtube className="w-6 h-6 hover:text-red-600 transition" />
+            <Youtube className="w-7 h-7" />
           </a>
           <a
-            href="mailto:ridingontheverge@gmail.com" // replace with your actual email
-            aria-label="Email"
+            href="mailto:ridingontheverge@gmail.com"
+            aria-label="Send Email"
+            className="hover:text-blue-600 transition-transform transform hover:scale-110"
           >
-            <Mail className="w-6 h-6 hover:text-blue-600 transition" />
+            <Mail className="w-7 h-7" />
           </a>
           <a
-            href="https://instagram.com/ridingontheverge" // replace with your actual Insta
+            href="https://instagram.com/ridingontheverge"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Instagram"
+            aria-label="Go to Instagram"
+            className="hover:text-pink-500 transition-transform transform hover:scale-110"
           >
-            <Instagram className="w-6 h-6 hover:text-pink-500 transition" />
+            <Instagram className="w-7 h-7" />
           </a>
         </div>
       </div>

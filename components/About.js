@@ -25,10 +25,10 @@ const About = () => {
             <br />
             <br />
             This channel is all about exploring rugged terrains, discovering
-            the rich culture of the Himalayas, and living life on the edge –
-            one ride at a time. Whether it’s tackling extreme weather, sharing
-            real travel experiences, or just showing the raw beauty of mountain
-            life, we bring it all to you with honesty and adventure.
+            the rich culture of the Himalayas, and living life on the edge – one
+            ride at a time. Whether it’s tackling extreme weather, sharing real
+            travel experiences, or just showing the raw beauty of mountain life,
+            we bring it all to you with honesty and adventure.
             <br />
             <br />
             Hop on, subscribe, and let’s ride together into the unknown!
@@ -43,20 +43,25 @@ const About = () => {
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{ delay: 2500 }}
-            className="rounded-xl shadow-lg max-w-sm"
+            className="rounded-xl shadow-lg max-w-100"
           >
-            {[
-              "/images/bike1.jpg",
-              "/images/bike2.jpg",
-              "/images/bike3.jpg",
-              "/images/bike4.jpg",
+            {[ 
+              "/images/bike1.jpg", 
+              "/images/bike2.jpg", 
+              "/images/bike3.jpg", 
+              "/images/bike4.jpg" 
             ].map((img, i) => (
               <SwiperSlide key={i}>
-                <img
-                  src={img}
-                  alt={`Ride image ${i + 1}`}
-                  className="w-full h-64 object-cover rounded-xl"
-                />
+                <div className="relative">
+                  <img
+                    src={img}
+                    alt={`Ride image ${i + 1}`}
+                    className="w-full h-64 object-cover rounded-xl"
+                  />
+                  <div className="absolute bottom-4 left-4 text-white text-2xl font-semibold bg-black/50 p-2 rounded-lg">
+                    Adventure Awaits
+                  </div>
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>

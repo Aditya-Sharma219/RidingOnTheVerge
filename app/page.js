@@ -15,22 +15,9 @@ export default function Home() {
   <HeroSection  />
   <Trips />
   <About />
-  <ParallaxSection
-        imageUrl="/images/photo1.jpg"
-        heading="EXPLORATION WITH AN EDGE"
-        subheading="Get to know about the Culture & Lifestyle of the Himalayas."
-      />
 
-      <ParallaxSection
-        imageUrl="/images/photo2.jpg"
-        heading="TEST YOUR METTLE"
-        subheading="Conquer the toughest roads with us!"
-      />
+<ParallaxSection/>
 
-      <ParallaxSection
-        imageUrl="/images/photo3.jpg"
-        heading="LIVE ON THE VERGE"
-      />
 
       <Footer />
   </>
