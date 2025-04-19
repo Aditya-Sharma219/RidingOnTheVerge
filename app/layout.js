@@ -4,6 +4,8 @@ import { Anton, Rubik } from "next/font/google";
 import { Inter } from "next/font/google";  // Correct import
 import Navbar from "@/components/Navbar";
 
+
+
 const inter = Inter({
   subsets: ['latin'],
 });

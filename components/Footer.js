@@ -95,13 +95,25 @@ const Footer = () => {
             socials
           </a>.
         </p>
-
       </div>
 
       {/* Bottom Text */}
-      <p className="text-center text-sm text-gray-500 mt-6">
-        © {new Date().getFullYear()} Riding On The Verge. All rights reserved.
-      </p>
+      <div className="text-center mt-6 space-y-1">
+        <p className="text-sm text-gray-500">
+          © {new Date().getFullYear()} Riding On The Verge. All rights reserved.
+        </p>
+        <p className="text-sm text-gray-600">
+          Website Created by{" "}
+          <a
+            href="https://www.linkedin.com/in/aditya-sharma-49a9142a6/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 underline hover:text-blue-900 transition"
+          >
+            Aditya Sharma
+          </a>
+        </p>
+      </div>
     </footer>
   );
 };
