@@ -1,27 +1,48 @@
 "use client";
-import React, { useState, useRef, useEffect, Suspense, useCallback } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, ContactShadows, useProgress, Html } from "@react-three/drei";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  Suspense,
+  memo,
+  useCallback,
+} from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import {
+  OrbitControls,
+  useGLTF,
+  ContactShadows,
+  useProgress,
+  Html,
+  Instances,
+  Instance,
+} from "@react-three/drei";
+import * as THREE from "three";
+// import DustParticles from "./DustParticles";
 
-// Bike Model with Disposal
-const Bike = () => {
+// ✅ Bike Model (with proper cleanup)
+const Bike = memo(() => {
   const { scene } = useGLTF("/models/bike.glb");
   const bikeRef = useRef();
 
-  // Dispose of the model to free up resources when it's no longer in view
   useEffect(() => {
     return () => {
-      if (bikeRef.current) {
-        bikeRef.current.traverse((child) => {
-          if (child.isMesh) {
-            child.geometry.dispose(); // Dispose of geometry
-            if (child.material.map) child.material.map.dispose(); // Dispose of textures
-            child.material.dispose(); // Dispose of materials
-          }
-        });
-      }
+      bikeRef.current?.traverse((child) => {
+        if (child.isMesh) {
+          child.geometry.dispose();
+          if (child.material.map) child.material.map.dispose();
+          child.material.dispose();
+        }
+      });
     };
   }, []);
+
+  useFrame(() => {
+    if (bikeRef.current) {
+      // Rotate the bike around the Y-axis at a medium speed (change the value to adjust speed)
+      bikeRef.current.rotation.y += 0.01; // Adjust the speed as needed
+    }
+  });
 
   return (
     <primitive
@@ -29,135 +50,197 @@ const Bike = () => {
       object={scene}
       scale={3}
       position={[0, -1.2, 0]}
-      rotation={[0, Math.PI, 0]}
+      rotation={[0, Math.PI, 0]} // Initial rotation to set the bike's orientation
     />
   );
-};
+});
 
-// Loading Overlay
+
+// ❄️ Optimized Snowfall using Instancing
+// ❄️ Enhanced Snowfall with Even Spread + Glow
+const Snow = memo(() => {
+  const snowCount = 250;
+  const snowData = useRef(
+    Array.from({ length: snowCount }, (_, i) => {
+      const gridSize = 10;
+      const spacing = 1.5;
+      const x = ((i % gridSize) - gridSize / 2) * spacing + (Math.random() - 0.5);
+      const z = (Math.floor(i / gridSize) - gridSize / 2) * spacing + (Math.random() - 0.5);
+      const y = Math.random() * 10;
+      return {
+        pos: new THREE.Vector3(x, y, z),
+        speed: 0.01 + Math.random() * 0.02,
+      };
+    })
+  );
+
+  const refs = useRef([]);
+
+  useFrame(() => {
+    snowData.current.forEach((snow, i) => {
+      snow.pos.y -= snow.speed;
+      if (snow.pos.y < -2) snow.pos.y = 10 + Math.random() * 5;
+      refs.current[i]?.position.copy(snow.pos);
+    });
+  });
+
+  return (
+    <Instances limit={snowCount}>
+      <sphereGeometry args={[0.07, 12, 12]} />
+      <meshStandardMaterial
+        color="#ffffff"
+        emissive="#ffffff"
+        emissiveIntensity={1.5}
+        toneMapped={false}
+      />
+      {snowData.current.map((snow, i) => (
+        <Instance key={i} ref={(el) => (refs.current[i] = el)} />
+      ))}
+    </Instances>
+  );
+});
+
+
+// ⏳ Loader UI
 const Loader = () => {
   const { progress } = useProgress();
   return (
     <Html center>
       <div className="text-white text-center">
-        <p className="mb-2">Loading Bike Model...</p>
-        <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
+        <p className="mb-2 font-medium">Loading Bike Model...</p>
+        <div className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden">
           <div
             className="h-full bg-purple-500 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="mt-2 text-sm">{Math.floor(progress)}%</p>
+        <p className="mt-2 text-sm text-gray-300">{Math.floor(progress)}%</p>
       </div>
     </Html>
   );
 };
 
-// BikeCanvas Component with Unload on Scroll
+// 🎥 Bike + Snow + Shadows Canvas
 const BikeCanvas = () => {
-  const [isVisible, setIsVisible] = useState(true); // Initially set to true
+  const [isVisible, setIsVisible] = useState(true);
   const canvasRef = useRef();
 
-  // Handle the visibility of the canvas (when it enters or leaves the viewport)
   const handleVisibility = useCallback((entries) => {
-    const [entry] = entries;
-    setIsVisible(entry.isIntersecting); // Update visibility when it's in view
+    setIsVisible(entries[0].isIntersecting);
   }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleVisibility, {
-      root: null,
-      threshold: 0.1, // Trigger visibility at 10%
+      threshold: 0.1,
     });
-
-    if (canvasRef.current) {
-      observer.observe(canvasRef.current); // Start observing the canvas
-    }
-
-    return () => {
-      observer.disconnect(); // Cleanup observer
-    };
+    if (canvasRef.current) observer.observe(canvasRef.current);
+    return () => observer.disconnect();
   }, [handleVisibility]);
-
-  // When not visible, dispose of the model
-  useEffect(() => {
-    if (!isVisible) {
-      // Clean up resources when the model is out of view
-      // You could call a function to trigger the disposal here if necessary
-      console.log("Model is out of view, unloading resources...");
-    }
-  }, [isVisible]);
 
   return (
     <Canvas
       ref={canvasRef}
       shadows
       camera={{ position: [3, 2, 6], fov: 45 }}
-      style={{ background: "black" }}
+      className="w-full h-full"
     >
-      {/* Lights */}
-      <ambientLight intensity={0.4} />
+      {/* 🌟 Scene Lighting */}
+      <ambientLight intensity={0.6} />
       <directionalLight
+        position={[4, 6, 4]}
+        intensity={1.2}
         castShadow
-        position={[5, 5, 5]}
-        intensity={3}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
       />
       <spotLight
-        position={[-2, 0, -2]}
-        angle={0.6}
-        penumbra={2}
-        intensity={3}
+        position={[-3, 5, -2]}
+        angle={0.5}
+        penumbra={1}
+        intensity={2}
         castShadow
-        color={"white"}
       />
-      <pointLight
-        position={[-3, 2, -2]}
-        intensity={3}
-        color="#8e44ad"
-        distance={10}
-      />
+      <pointLight position={[2, 1, 1]} intensity={3.5} color="#9b59b6" />
 
-      {/* Model */}
+      {/* 🌨️ Snow + Bike + Shadow */}
       <Suspense fallback={<Loader />}>
-        {isVisible && <Bike />}
+        <Snow />
         {isVisible && (
-          <ContactShadows
-            position={[0, -1.4, 0]}
-            opacity={0.6}
-            scale={40}
-            blur={1.8}
-            far={4}
-          />
+          <>
+            <Bike />
+            {/* Dust particles below the bike */}
+            
+            <ContactShadows
+              position={[0, -1.4, 0]}
+              scale={40}
+              blur={1.6}
+              far={4}
+              opacity={0.5}
+            />
+          </>
         )}
       </Suspense>
+
 
       <OrbitControls enableZoom={true} />
     </Canvas>
   );
 };
 
-// Main Scene with Overlay
+// 🚴‍♂️ Main Scene with Start Screen
 const BikeScene = () => {
   const [start, setStart] = useState(false);
+  const engineSound = useRef(null);
+  const raceSound = useRef(null);
+  const hasPlayed = useRef(false);
+
+  const handleStart = () => {
+    if (start || hasPlayed.current) return;
+
+    setStart(true);
+    hasPlayed.current = true;
+
+    if (engineSound.current && raceSound.current) {
+      engineSound.current.play();
+
+      const handleEngineEnd = () => {
+        raceSound.current.play(); // ▶️ Play once
+        engineSound.current.removeEventListener("ended", handleEngineEnd);
+      };
+
+      engineSound.current.addEventListener("ended", handleEngineEnd);
+    }
+  };
+
+
 
   return (
-    <div id="game" className="w-full h-screen bg-black relative flex items-center justify-center">
+    <div
+      id="game"
+      className="w-full h-screen relative bg-black overflow-hidden flex items-center justify-center"
+    >
+      {/* 🔊 Hidden audio elements */}
+      <audio ref={engineSound} src="/sounds/engine.mp3" preload="auto" />
+      <audio
+        ref={raceSound}
+        src="/sounds/race.mp3"
+        preload="auto"
+
+      />
+
       {!start && (
-        <div className="absolute inset-0 bg-black flex items-center justify-center z-10">
-          <div className="text-center">
-            <h1 className="text-white text-3xl font-semibold mb-6">🚴‍♂️ Ready to explore the bike?</h1>
-            <button
-              onClick={() => setStart(true)}
-              className="bg-purple-600 cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition"
-            >
-              Play
-            </button>
-          </div>
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black bg-opacity-90">
+          <h1 className="text-white text-4xl md:text-5xl font-bold mb-8">
+            🚴 Ready to Ride?
+          </h1>
+          <button
+            onClick={handleStart}
+            className="bg-purple-600 cursor-pointer px-8 py-4 rounded-full text-white text-lg font-semibold hover:bg-purple-700 transition-all shadow-lg"
+          >
+            Start 3D Experience
+          </button>
         </div>
       )}
-
       {start && <BikeCanvas />}
     </div>
   );

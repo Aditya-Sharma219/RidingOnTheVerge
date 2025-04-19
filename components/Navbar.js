@@ -9,49 +9,37 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMuted, setIsMuted] = useState(false); // State to track mute/unmute
   const [hasInteracted, setHasInteracted] = useState(false); // Track user interaction for autoplay
+  const [shouldPlay, setShouldPlay] = useState(false); // Control whether the song should play
 
   const audioRef = useRef(null);
 
-  const songs = [
-    "/music/music1.mp3",
-    "/music/music2.mp3",
-    "/music/music3.mp3",
-    "/music/music4.mp3",
-  ];
+  const music = "/music/music1.mp3"; // Hardcode to play music1 only
 
-  // Pick a random song and start/seek
-  const playRandomSong = () => {
-    if (!audioRef.current) return;
-
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    const startTime = Math.floor(Math.random() * 15); // 0 to 15 sec
-    const duration = 30000 + Math.floor(Math.random() * 30000); // 30s to 60s
+  // Play the song in loop with low volume
+  const playSong = () => {
+    if (!audioRef.current || !shouldPlay) return; // Prevent autoplay when shouldPlay is false
 
     const audio = audioRef.current;
-    audio.src = songs[randomIndex];
-    audio.currentTime = startTime;
-    audio.volume = 0.3;
+    audio.src = music;
+    audio.loop = true; // Loop the song
+    audio.volume = 0.1; // Set the volume to 10%
     audio.muted = isMuted;
 
     // Make sure the autoplay works and restart the song
     audio.play().catch((e) => console.warn("Autoplay blocked:", e));
-
-    // Stop the current song after a random duration
-    setTimeout(() => {
-      audio.pause();
-      playRandomSong(); // Trigger next song
-    }, duration);
   };
 
   const handleSongEnd = () => {
-    playRandomSong();
+    // Since the song is in a loop, no need to handle the end of the song
+    playSong();
   };
 
   useEffect(() => {
     const handleUserInteraction = () => {
       if (!hasInteracted) {
         setHasInteracted(true);
-        playRandomSong();
+        setShouldPlay(true); // Allow the first song to play after user interaction
+        playSong();
       }
     };
 
@@ -84,6 +72,15 @@ const Navbar = () => {
       }
       return !prevState;
     });
+
+    // Stop the song from auto-playing after mute/unmute
+    setShouldPlay(false); // Don't play music when mute button is clicked
+
+    // Wait for the current song to finish, then allow new music to play
+    setTimeout(() => {
+      setShouldPlay(true);
+      playSong();
+    }, 1000); // 1-second delay before allowing new music to play
   };
 
   return (
