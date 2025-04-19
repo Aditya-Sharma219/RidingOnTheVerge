@@ -1,18 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-
-const getRandomGradient = useCallback(() => {
-  const gradients = [
-    "from-pink-500 to-yellow-500",
-    "from-blue-400 to-purple-600",
-    "from-green-400 to-blue-500",
-    "from-red-400 to-orange-500",
-    "from-teal-400 to-blue-500",
-    "from-indigo-500 to-pink-500",
-  ];
-  const index = Math.floor(Math.random() * gradients.length);
-  return gradients[index];
-}, []);
+import Image from "next/image"; // Importing Image for optimization
 
 const Trips = () => {
   const scrollRef = useRef(null);
@@ -24,22 +12,34 @@ const Trips = () => {
   const [gradient, setGradient] = useState(null); // Initially null
   const [animate, setAnimate] = useState(false);
 
+  const getRandomGradient = useCallback(() => {
+    const gradients = [
+      "from-pink-500 to-yellow-500",
+      "from-blue-400 to-purple-600",
+      "from-green-400 to-blue-500",
+      "from-red-400 to-orange-500",
+      "from-teal-400 to-blue-500",
+      "from-indigo-500 to-pink-500",
+    ];
+    const index = Math.floor(Math.random() * gradients.length);
+    return gradients[index];
+  }, []);
+
   useEffect(() => {
-    // Generate a random gradient only on the client side
     setGradient(getRandomGradient());
 
     const interval = setInterval(() => {
       setAnimate(true);
       setTimeout(() => {
-        setPrevWordIndex(currentWordIndex); // Update the previous word
+        setPrevWordIndex(currentWordIndex);
         setGradient(getRandomGradient());
         setCurrentWordIndex((prev) => (prev + 1) % words.length);
         setAnimate(false);
-      }, 600); // Animation time for word transition
+      }, 600);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [currentWordIndex]);
+  }, [currentWordIndex, words.length]); // Add words.length to the dependency
 
   const destinations = [
     { name: "Goa", img: "/images/photo1.jpg" },
@@ -123,10 +123,12 @@ const Trips = () => {
               className="min-w-[350px] bg-white rounded-xl overflow-hidden shadow-lg relative cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
               onClick={() => setSelectedImage(card.img)}
             >
-              <img
+              <Image
                 src={card.img}
                 alt={card.name}
                 className="w-full h-[400px] object-cover transition-transform duration-300 hover:scale-110"
+                width={350}
+                height={400}
               />
               <div className="absolute bottom-4 left-4 text-white drop-shadow-lg">
                 <h2 className="text-2xl font-semibold">{card.name}</h2>
@@ -149,10 +151,12 @@ const Trips = () => {
             >
               &times;
             </button>
-            <img
+            <Image
               src={selectedImage}
               alt="Destination"
               className="w-full h-full object-contain rounded-lg shadow-xl transition-transform duration-500 transform scale-105 hover:scale-110"
+              width={1200} // Adjust the size as needed
+              height={800}
             />
           </div>
         </div>
