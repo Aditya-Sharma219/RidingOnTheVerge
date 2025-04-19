@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -23,22 +23,24 @@ const HeroCarousel = () => {
     "/images/photo3.jpg",
   ];
 
-  const nextImage = () => {
+  // Wrap the nextImage and prevImage functions in useCallback to prevent unnecessary re-renders
+  const nextImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, [images.length]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  };
+  }, [images.length]);
 
+  // Start the interval to change images
   useEffect(() => {
     const interval = setInterval(nextImage, 5000);
     return () => clearInterval(interval);
-  }, [nextImage]); // Added nextImage as a dependency
+  }, [nextImage]);
 
   return (
     <section
@@ -52,9 +54,10 @@ const HeroCarousel = () => {
           key={index}
           src={img}
           alt={`Carousel Image ${index + 1}`} // Descriptive alt text
-          fill
-          loading="lazy"
-          className={`absolute top-0 left-0 object-cover transition-all duration-1000 ease-in-out ${
+          layout="fill"
+          objectFit="cover"
+          loading={index === 0 ? "eager" : "lazy"} // prioritize the first image
+          className={`absolute top-0 left-0 transition-all duration-1000 ease-in-out ${
             index === currentImageIndex
               ? "opacity-100 z-10 scale-105"
               : "opacity-0 z-0 scale-100"
