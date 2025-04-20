@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Contact = () => {
     const formRef = useRef();
     const [success, setSuccess] = useState(false);
-    const WEB3_KEY = process.env.WEB3FORMS_API_KEY;
+    const WEB3_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_API_KEY;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
