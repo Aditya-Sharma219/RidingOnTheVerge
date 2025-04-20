@@ -56,7 +56,7 @@ const Trips = () => {
     const handleImageClick = (img) => setSelectedImage(img);
 
     return (
-        <section className="bg-[#FFF7DB] py-12 px-4">
+        <section id="trips" className="bg-[#FFF7DB] py-12 px-4">
             {/* Heading */}
             <h2 className="text-5xl md:text-6xl font-extrabold text-center text-gray-800 mb-10 relative group">
                 <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500">

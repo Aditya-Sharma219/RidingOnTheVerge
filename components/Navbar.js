@@ -141,7 +141,7 @@ const Navbar = () => {
 
       {open && (
         <div className="md:hidden animate-fade-in-down bg-black/90 text-white px-6 pb-4 pt-2 space-y-3 shadow-xl transition-all transform translate-y-0">
-          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#footer" }, { name: "Game", href: "#game" }].map(
+          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#trips" }, { name: "Contact", href: "#footer" }, { name: "Game", href: "#game" }].map(
             (link) => (
               <Link
                 key={link.name}

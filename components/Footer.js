@@ -31,7 +31,7 @@ const Footer = () => {
             About
           </button>
           <button
-            onClick={() => scrollToSection("gallery")}
+            onClick={() => scrollToSection("trips")}
             aria-label="Go to Gallery Section"
             className="hover:text-blue-600 cursor-pointer transition-colors duration-300"
           >
