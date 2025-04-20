@@ -1,143 +1,88 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image"; // Importing Image for optimization
+import React, { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 
 const Trips = () => {
     const scrollRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const scrollIntervalRef = useRef(null);
 
-    const words = ["Trips", "Journeys", "Adventures", "Escapes"];
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [prevWordIndex, setPrevWordIndex] = useState(null); // Track previous word index
-    const [gradient, setGradient] = useState(null); // Initially null
-    const [animate, setAnimate] = useState(false);
-
-    const getRandomGradient = useCallback(() => {
-        const gradients = [
-            "from-pink-500 to-yellow-500",
-            "from-blue-400 to-purple-600",
-            "from-green-400 to-blue-500",
-            "from-red-400 to-orange-500",
-            "from-teal-400 to-blue-500",
-            "from-indigo-500 to-pink-500",
-        ];
-        const index = Math.floor(Math.random() * gradients.length);
-        return gradients[index];
-    }, []);
-
-    useEffect(() => {
-        setGradient(getRandomGradient());
-
-        const interval = setInterval(() => {
-            setAnimate(true);
-            setTimeout(() => {
-                setPrevWordIndex(currentWordIndex);
-                setGradient(getRandomGradient());
-                setCurrentWordIndex((prev) => (prev + 1) % words.length);
-                setAnimate(false);
-            }, 600);
-        }, 4000);
-
-        return () => clearInterval(interval);
-    }, [currentWordIndex, words.length, getRandomGradient]);  // Add getRandomGradient to dependencies
-    // Add words.length to the dependency
-
-    const destinations = [
-        { name: "Goa", img: "/images/photo1.jpg" },
-        { name: "Thar", img: "/images/photo2.jpg" },
-        { name: "Pune", img: "/images/photo3.jpg" },
-        { name: "Shimla", img: "/images/photo4.jpg" },
-        { name: "Delhi", img: "/images/photo5.jpg" },
+    const images = [
+        "/images/photo1.jpg", "/images/photo2.jpg", "/images/photo3.jpg", "/images/photo4.jpg",
+        "/images/photo5.jpg", "/images/pp14.jpg", "/images/pl1.jpg", "/images/pl2.jpg", "/images/pl3.jpg",
+        "/images/pl4.jpg", "/images/pl5.jpg", "/images/pl9.jpg", "/images/pp1.jpg", "/images/pp3.jpg",
+        "/images/pp5.jpg", "/images/pp8.jpg", "/images/pp6.jpg", "/images/pp7.jpg", "/images/pp9.jpg",
+        "/images/pp10.jpg", "/images/pp11.jpg", "/images/pp12.jpg", "/images/bike5.jpg", "/images/bike6.jpg",
+        "/images/pp13.jpg",
     ];
-    const duplicatedDestinations = [...destinations, ...destinations];
+
+    const scrollStep = 350; // pixel width to scroll at each step
+    const scrollDelay = 3000; // time in ms between scrolls
 
     useEffect(() => {
         const container = scrollRef.current;
-        const interval = setInterval(() => {
-            if (container) {
-                if (container.scrollLeft >= container.scrollWidth / 2) {
-                    container.scrollLeft = 0;
-                } else {
-                    container.scrollLeft += 220;
-                }
-            }
-        }, 3000);
+        if (!container) return;
 
-        return () => clearInterval(interval);
-    }, []);
+        const scrollImages = () => {
+            if (!container) return;
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+            if (container.scrollLeft + scrollStep >= maxScrollLeft) {
+                // Reset to beginning
+                container.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+                // Scroll to next step
+                container.scrollBy({ left: scrollStep, behavior: "smooth" });
+            }
+        };
+
+        if (!isHovered) {
+            scrollIntervalRef.current = setInterval(scrollImages, scrollDelay);
+        }
+
+        return () => clearInterval(scrollIntervalRef.current);
+    }, [isHovered]);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        clearInterval(scrollIntervalRef.current);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
+    const handleImageClick = (img) => setSelectedImage(img);
 
     return (
-        <>
-            {/* Hero Section */}
-            <section id="gallery" className="relative w-full h-screen overflow-hidden">
-                <video
-                    autoPlay
-                    muted
-                    loop
-                    className="absolute top-0 left-0 w-full h-full object-cover"
-                >
-                    <source src="/videos/hero-video.mp4" type="video/mp4" />
-                </video>
+        <section className="bg-[#FFF7DB] py-12 px-4">
+            {/* Heading */}
+            <h2 className="text-5xl md:text-6xl font-extrabold text-center text-gray-800 mb-10 relative group">
+                <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                    Trips
+                </span>
+                <span className="relative group-hover:scale-105 group-hover:tracking-wider transition-all duration-500 ease-in-out">
+                    Trips
+                </span>
+            </h2>
 
-                <div className="relative z-10 flex flex-col justify-center items-start h-full px-8 bg-black/40">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white flex flex-col md:flex-row items-baseline gap-3">
-                        International
-                        <span
-                            className={`inline-block text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r ${gradient} transition-all duration-1000 transform ${animate ? "opacity-0 -translate-y-10" : "opacity-100 translate-y-0"
-                                }`}
-                        >
-                            {words[currentWordIndex]}
-                        </span>
-                    </h1>
-                    <p className="text-lg text-gray-100 mt-2">
-                        Discover the world, one destination at a time
-                    </p>
-                    <a
-                        href="https://www.youtube.com/@RidingOnTheVerge/videos"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-6 inline-block px-8 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-full shadow-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:opacity-90"
-                    >
-                        🚀 Explore Now
-                    </a>
-                </div>
-            </section>
+            {/* Carousel */}
+            <div
+                ref={scrollRef}
+                className="flex overflow-x-auto space-x-4 px-1 sm:px-4 scrollbar-hide scroll-smooth"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                {images.map((img, idx) => (
+                    <ImageCard key={idx} img={img} onClick={handleImageClick} />
+                ))}
+            </div>
 
-            {/* Trips Section */}
-            <section className="bg-[#FFF7DB] py-12 px-4">
-                <h2 className="text-6xl font-extrabold text-center text-gray-800 mb-10 relative overflow-hidden group">
-                    <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent">
-                        Trips
-                    </span>
-                    <span className="relative group-hover:scale-105 group-hover:tracking-wide transition-all duration-500 ease-in-out">
-                        Trips
-                    </span>
-                </h2>
-
-                <div
-                    ref={scrollRef}
-                    className="flex overflow-x-auto space-x-6 scrollbar-hide scroll-smooth"
-                >
-                    {duplicatedDestinations.map((card, idx) => (
-                        <div
-                            key={idx}
-                            className="min-w-[350px] bg-white rounded-xl overflow-hidden shadow-lg relative cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
-                            onClick={() => setSelectedImage(card.img)}
-                        >
-                            <Image
-                                src={card.img}
-                                alt={card.name}
-                                className="w-full h-[400px] object-cover transition-transform duration-300 hover:scale-110"
-                                width={350}
-                                height={400}
-                            />
-                            <div className="absolute bottom-4 left-4 text-white drop-shadow-lg">
-                                <h2 className="text-2xl font-semibold">{card.name}</h2>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            {/* Info Text */}
+            <p className="text-center text-sm text-gray-500 mt-4 italic">
+                📸 Click on any image to view full size
+            </p>
 
             {/* Modal */}
             {selectedImage && (
@@ -154,16 +99,31 @@ const Trips = () => {
                         </button>
                         <Image
                             src={selectedImage}
-                            alt="Destination"
-                            className="w-full h-full object-contain rounded-lg shadow-xl transition-transform duration-500 transform scale-105 hover:scale-110"
-                            width={1200} // Adjust the size as needed
+                            alt="Full View"
+                            className="w-full h-full max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-xl transition-transform duration-500 transform scale-105 hover:scale-110"
+                            width={1200}
                             height={800}
                         />
                     </div>
                 </div>
             )}
-        </>
+        </section>
     );
 };
+
+const ImageCard = ({ img, onClick }) => (
+    <div
+        className="min-w-[220px] sm:min-w-[280px] md:min-w-[320px] lg:min-w-[360px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl cursor-pointer transition-all duration-300 hover:scale-[1.05]"
+        onClick={() => onClick(img)}
+    >
+        <Image
+            src={img}
+            alt="Trip"
+            className="w-full h-[220px] sm:h-[280px] md:h-[330px] object-cover transition-transform duration-300 hover:scale-110"
+            width={360}
+            height={360}
+        />
+    </div>
+);
 
 export default Trips;

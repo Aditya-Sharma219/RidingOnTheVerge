@@ -20,19 +20,27 @@ const About = () => {
             About Riding On The Verge
           </h2>
           <p className="text-gray-700 text-lg leading-relaxed">
-            Welcome to{" "}
-            <span className="font-semibold">Riding On The Verge</span> – where
-            passion meets the open road!
+            Welcome to <span className="font-semibold">Riding On The Verge</span> – where
+            the journey is as epic as the destination!
             <br />
             <br />
-            This channel is all about exploring rugged terrains, discovering
-            the rich culture of the Himalayas, and living life on the edge – one
-            ride at a time. Whether it’s tackling extreme weather, sharing real
-            travel experiences, or just showing the raw beauty of mountain life,
-            we bring it all to you with honesty and adventure.
+            From the scorching dunes of Rajasthan&apos;s deserts to the snow-kissed peaks of
+            the Himalayas, from lush green valleys to wild national parks and mighty rivers &ndash;
+            we ride through every heartbeat of India.
             <br />
             <br />
-            Hop on, subscribe, and let’s ride together into the unknown!
+            Our adventures are more than just rides &mdash; they are raw, real, and unfiltered experiences
+            on the back of our roaring Harley-Davidson bikes. Every trail has a story, every mountain
+            hides a memory, and every river sings a new song.
+            <br />
+            <br />
+            Whether it&apos;s the spiritual serenity of the hills, the roaring rush of the highways, or
+            the untouched beauty of nature, we capture it all &mdash; the thrill, the challenges, and the
+            breathtaking views &mdash; so you can experience the freedom of the road with us.
+            <br />
+            <br />
+            Subscribe, buckle up, and let&apos;s ride through the soul of India together &mdash; one destination,
+            one emotion, one throttle at a time.
           </p>
         </div>
 
@@ -47,10 +55,10 @@ const About = () => {
             className="rounded-xl shadow-lg w-full max-w-lg h-80" // Added explicit height for visibility
           >
             {[ 
-              "/images/bike1.jpg", 
-              "/images/bike2.jpg", 
-              "/images/bike3.jpg", 
-              "/images/bike4.jpg" 
+              "/images/bike6.jpg",
+              "/images/bike2.jpg",
+              "/images/bike5.jpg",
+              "/images/bike3.jpg",
             ].map((img, i) => (
               <SwiperSlide key={i}>
                 <div className="relative w-full h-full">

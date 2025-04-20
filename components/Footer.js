@@ -1,10 +1,6 @@
 "use client";
 import React from "react";
-import {
-  Youtube,
-  Mail,
-  Instagram,
-} from "lucide-react";
+import { Youtube, Mail, Instagram } from "lucide-react";
 
 const Footer = () => {
   const scrollToSection = (id) => {
@@ -71,30 +67,6 @@ const Footer = () => {
             <Instagram className="w-8 h-8" />
           </a>
         </div>
-      </div>
-
-      {/* Collaborate Section */}
-      <div className="text-center mt-10 px-4 max-w-2xl mx-auto bg-white/60 rounded-xl shadow-md py-6">
-        <h3 className="text-xl font-semibold mb-2 text-gray-800">Work With Us 🚀</h3>
-        <p className="text-md text-gray-700">
-          Interested in sponsoring our rides or collaborating with us?
-          We&apos;d love to hear from you! Reach out via{" "}
-          <a
-            href="mailto:ridingontheverge@gmail.com"
-            className="text-blue-600 underline hover:text-blue-800 transition"
-          >
-            email
-          </a>{" "}
-          or connect on our{" "}
-          <a
-            href="https://instagram.com/ridingontheverge"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-pink-600 underline hover:text-pink-800 transition"
-          >
-            socials
-          </a>.
-        </p>
       </div>
 
       {/* Bottom Text */}

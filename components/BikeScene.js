@@ -189,7 +189,6 @@ const BikeCanvas = () => {
 // 🚴‍♂️ Main Scene with Start Screen
 const BikeScene = () => {
   const [start, setStart] = useState(false);
-  const engineSound = useRef(null);
   const raceSound = useRef(null);
   const hasPlayed = useRef(false);
 
@@ -199,15 +198,8 @@ const BikeScene = () => {
     setStart(true);
     hasPlayed.current = true;
 
-    if (engineSound.current && raceSound.current) {
-      engineSound.current.play();
-
-      const handleEngineEnd = () => {
-        raceSound.current.play(); // ▶️ Play once
-        engineSound.current.removeEventListener("ended", handleEngineEnd);
-      };
-
-      engineSound.current.addEventListener("ended", handleEngineEnd);
+    if (raceSound.current) {
+      raceSound.current.play();
     }
   };
 
@@ -216,8 +208,7 @@ const BikeScene = () => {
       id="game"
       className="w-full h-screen relative bg-black overflow-hidden flex items-center justify-center"
     >
-      {/* 🔊 Hidden audio elements */}
-      <audio ref={engineSound} src="/sounds/engine.mp3" preload="auto" />
+      {/* 🔊 Hidden audio element for race sound */}
       <audio
         ref={raceSound}
         src="/sounds/race.mp3"

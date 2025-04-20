@@ -5,7 +5,8 @@ import Trips from "@/components/Trips";
 import About from "@/components/About";
 import BikeScene from "@/components/BikeScene";
 import ParallaxSection from "@/components/ParallaxSection";
-import Footer from "@/components/Footer";
+import Video from "@/components/Video";
+import Contact from "@/components/Contact";
 import "./globals.css";
 
 
@@ -15,11 +16,13 @@ export default function Home() {
       <CustomCursor />
       <HeroCarousel />
       <HeroSection />
+      <Video/>
       <Trips />
       <About />
       <BikeScene />
       <ParallaxSection />
-      <Footer />
+      <Contact/>
+      
     </>
   );
 }

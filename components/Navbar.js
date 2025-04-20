@@ -94,11 +94,11 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <Link href="#home">
             <Image
-              className="rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300 shadow-md"
+              className="rounded-lg cursor-pointer hover:scale-140 transition-transform duration-300 shadow-md"
               src="/images/logo.png"
               alt="Logo"
-              width={50}
-              height={50}
+              width={80}
+              height={80}
             />
           </Link>
 
@@ -114,7 +114,7 @@ const Navbar = () => {
         </div>
 
         <nav className="hidden md:flex space-x-8 text-lg font-medium">
-          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#footer" }, { name: "Game", href: "#game" }].map(
+          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#contact" }, { name: "Game", href: "#game" }].map(
             (link) => (
               <Link
                 key={link.name}

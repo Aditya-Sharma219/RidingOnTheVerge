@@ -3,7 +3,7 @@ import { Bebas_Neue } from "next/font/google";
 import { Anton, Rubik } from "next/font/google";
 import { Inter } from "next/font/google";  // Correct import
 import Navbar from "@/components/Navbar";
-
+import Footer from "@/components/Footer";
 
 
 const inter = Inter({
@@ -44,6 +44,7 @@ export default function RootLayout({ children }) {
       <body className={`${anton.variable} ${rubik.variable} ${inter.variable} antialiased`}>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
