@@ -114,7 +114,7 @@ const Navbar = () => {
         </div>
 
         <nav className="hidden md:flex space-x-8 text-lg font-medium">
-          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#gallery" }, { name: "Contact", href: "#contact" }, { name: "Game", href: "#game" }].map(
+          {[{ name: "Home", href: "#home" }, { name: "About", href: "#about" }, { name: "Videos", href: "#videos" }, { name: "Gallery", href: "#trips" }, { name: "Contact", href: "#contact" }, { name: "Game", href: "#game" }].map(
             (link) => (
               <Link
                 key={link.name}
